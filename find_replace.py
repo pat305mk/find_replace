@@ -19,8 +19,8 @@ def find_and_replace(file_path, target_word, replacement_word):
 
 # Replace the following values with your file path and target/replacement words
 file_path = 'AddNovember2024FundInvestmentDocuments.sql'  # Replace with your actual file path
-target_word = 'December'  # Replace with the word/phrase you want to replace
-replacement_word = 'January'  # Replace with the new word/phrase
+target_word = 'January'  # Replace with the word/phrase you want to replace
+replacement_word = 'March'  # Replace with the new word/phrase
 
 find_and_replace(file_path, target_word, replacement_word)
 
