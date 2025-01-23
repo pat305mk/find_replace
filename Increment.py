@@ -1,37 +1,50 @@
 import re
 
-def increment_sixth_column(file_path, increment_by=1):
-    try:
-        # Read the contents of the file
-        with open(file_path, 'r') as file:
-            content = file.read()
+# Function to increment the DisplayOrder value in the given SQL statement
+def increment_display_order(sql_statement):
+    # Regular expression to match the DisplayOrder value
+    match = re.search(r"(\d+)\s*,\s*'application/pdf'", sql_statement)
+    
+    if match:
+        # Extract the current DisplayOrder value
+        current_display_order = int(match.group(1))
+        
+        # Increment the DisplayOrder value
+        new_display_order = current_display_order + 1
+        
+        # Replace the old DisplayOrder value with the new one in the SQL statement
+        updated_sql_statement = sql_statement.replace(str(current_display_order), str(new_display_order))
+        
+        return updated_sql_statement
+    else:
+        raise ValueError("DisplayOrder value not found in the SQL statement")
 
-        # Define a function to increment the sixth column value
-        def increment_match(match):
-            values = re.split(r",(?=(?:[^']*'[^']*')*[^']*$)", match.group(1))
-            # Increment the sixth value (index 5, zero-based)
-            sixth_value = int(values[5].strip())
-            values[5] = f"{sixth_value + increment_by}"
-            # Rebuild the VALUES statement
-            return f"VALUES({','.join(values)})"
+# Function to read from file, process, and write the result back
+def process_sql_file(file_path, output_path=None):
+    # Read content from the text file
+    with open(file_path, 'r') as file:
+        sql_content = file.readlines()
 
-        # Use regex to match the VALUES(...) block and update the sixth column
-        updated_content = re.sub(
-            r"VALUES\((.*?)\)",  # Matches the content inside VALUES(...)
-            increment_match,
-            content
-        )
+    # Process each line and increment the DisplayOrder in the SQL statements
+    updated_lines = []
+    for line in sql_content:
+        try:
+            updated_line = increment_display_order(line)
+            updated_lines.append(updated_line)
+        except ValueError:
+            # If the line doesn't contain a valid DisplayOrder, just append it as is
+            updated_lines.append(line)
 
-        # Write the updated content back to the file
-        with open(file_path, 'w') as file:
-            file.write(updated_content)
+    # Write the updated SQL content to the same file or a new file
+    output_file = output_path if output_path else file_path
+    with open(output_file, 'w') as file:
+        file.writelines(updated_lines)
 
-        print(f"Successfully incremented the 6th column by {increment_by}!")
-    except Exception as e:
-        print(f"An error occurred: {e}")
+    print(f"Updated SQL has been written to: {output_file}")
 
-# Replace with the path to your document
-file_path = 'MobiChangesArchivingOctober2024.sql'  # Replace with the actual file path
-increment_by = 1  # Change this to the desired increment value
-
-increment_sixth_column(file_path, increment_by)
+# Example usage
+if __name__ == "__main__":
+    input_file = 'in.txt'  # Path to your input file
+    output_file = 'MobiChangesArchivingOctober2024.sql'  # Path to your output file (optional)
+    
+    process_sql_file(input_file, output_file)
