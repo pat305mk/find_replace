@@ -164,15 +164,15 @@ VALUES(2,1001,56,'November 2024','Fund (November 2024) - Low Equity(Tax-free).pd
  
 begin tran
 
-select * from [Mobi].[Documents] where Description = 'November 2024' and DisplayOrder in (14,15)
+select * from [Mobi].[Documents] where Description = 'October 2024' and DisplayOrder in (14,15)
 
-delete [Mobi].[Documents] where Description = 'November 2024' and DisplayOrder in (14,15)
+delete [Mobi].[Documents] where Description = 'October 2024' and DisplayOrder in (14,15)
 
-select * from [Mobi].[Documents] where Description = 'November 2024' and DisplayOrder in (14,15)
+select * from [Mobi].[Documents] where Description = 'October 2024' and DisplayOrder in (14,15)
 
 
---rollback tran
-commit tran
+rollback tran
+--commit tran
 
 
 

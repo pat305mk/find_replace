@@ -42,7 +42,8 @@ def process_sql_file(file_path, output_path=None):
 
     print(f"Updated SQL has been written to: {output_file}")
 
-# Example usage
+# Increment the display order in the txt 
+#Save the desire output to MobiChangesArchivingOctober2024.sql'
 if __name__ == "__main__":
     input_file = 'in.txt'  # Path to your input file
     output_file = 'MobiChangesArchivingOctober2024.sql'  # Path to your output file (optional)
